@@ -1,6 +1,7 @@
 import bodyParser, { json } from "body-parser"
 import express from "express"
 import cors from 'cors'
+import connect from "./database/connect.js"
 
 
 let app = express()
