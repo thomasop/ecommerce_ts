@@ -7,6 +7,7 @@ const User = connect.define(
     id: {
       type: DataTypes.UUID,
       autoIncrement: true,
+      primaryKey: true
     },
     firstname: {
       type: DataTypes.STRING,

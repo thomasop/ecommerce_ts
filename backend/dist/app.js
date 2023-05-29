@@ -1,11 +1,12 @@
 import bodyParser from "body-parser";
 import express from "express";
 import cors from 'cors';
+import { userRouter } from "./routes/User.js";
+import cookieParser from "cookie-parser";
 let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser(process.env.SECRET_COOKIE));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-app.get("/", (req, res) => {
-    res.json('test');
-});
+app.use('/user', userRouter);
 export default app;
