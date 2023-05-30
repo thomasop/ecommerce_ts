@@ -30,7 +30,6 @@ interface User {
   lastname: string;
 }
 
-
 interface ErrorsBody {
   errors: Error[];
 }
@@ -68,13 +67,16 @@ const LoginFetch: React.FC<Proptype> = ({
       });
       const json: Data = await response.json();
       console.log(json);
+      console.log(remember);
       if (json.result.status === 200) {
         setSendForm(false);
         setServerError(json.result.error);
+
         if (remember === true) {
           let expires = new Date();
           expires.setFullYear(expires.getFullYear() + 1);
-          document.cookie = `token=${json.result.token};expires=${expires}; path=/`;
+          document.cookie =
+            "token=" + json.result.token + ";expires=" + expires.toUTCString();
           navigate("/");
         } else {
           document.cookie = `token=${json.result.token}; path=/`;
@@ -88,9 +90,9 @@ const LoginFetch: React.FC<Proptype> = ({
         setSendForm(false);
         if (json.result.errorsBody.errors) {
           json.result.errorsBody.errors.map((error) => {
-            if (error.path === "password") {
+            if (error.path === "email") {
               setEmailInputError(error.msg);
-            } else if (error.path === "email") {
+            } else if (error.path === "password") {
               setPasswordInputError(error.msg);
             }
             return null;

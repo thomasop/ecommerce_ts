@@ -3,7 +3,10 @@ import LoginDisplay from '../components/display/LoginDisplay'
 
 const Login = () => {
   return (
-    <LoginDisplay />
+    <div className='login'>
+      <LoginDisplay />
+    </div>
+    
   )
 }
 

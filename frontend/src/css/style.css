@@ -1,0 +1,74 @@
+/* import police on google font */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Shrikhand&display=swap");
+/* Variable for color and animation duration */ /* Maps for responsive device */
+/* Maps for responsive device */
+/* Mixins for responsive device */
+/* like animation */ /* Maps for responsive device */
+/* Mixins for responsive device */ /* Base tag */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: content-box;
+}
+
+/* Maps for responsive device */
+/* Mixins for responsive device */ /* Header tag */
+/* Maps for responsive device */
+/* Mixins for responsive device */ /* Footer tag */
+/* Variable for color and animation duration */
+/* Style for home page */
+/* Variable for color and animation duration */
+/* Style for menu page */
+/* Variable for color and animation duration */
+/* Style for login page */
+.login__form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: aqua;
+  width: 50%;
+  height: 300px;
+  border-radius: 20px;
+  padding: 20px;
+}
+.login__h1 {
+  text-align: center;
+}
+.login__div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.login__divEmail {
+  margin-top: 10px;
+}
+.login__divError {
+  color: red;
+  margin-top: 3px;
+}
+.login__input {
+  border-radius: 5px;
+  border: none;
+  height: 17px;
+}
+.login__divSubmit {
+  text-align: center;
+}
+.login__divErrors {
+  color: red;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.login__submit {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+}
+
+/*# sourceMappingURL=style.css.map */

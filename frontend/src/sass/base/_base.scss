@@ -1,0 +1,11 @@
+@import "../utils/mixins";
+
+/* Base tag */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+* {
+    box-sizing: content-box;
+}

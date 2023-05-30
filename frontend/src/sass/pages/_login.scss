@@ -1,0 +1,53 @@
+@import "../utils/variables";
+
+/* Style for login page */
+
+.login {
+    
+    &__form {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: aqua;
+        width: 50%;
+        height: 300px;
+        border-radius: 20px;
+        padding: 20px;
+    }
+    &__h1 {
+        text-align: center;
+    }
+    &__div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+    &__divEmail {
+        margin-top: 10px;
+    }
+    &__divError {
+        color: red;
+        margin-top: 3px;
+    }
+    &__input {
+        border-radius: 5px;
+        border: none;
+        height: 17px;
+    }
+    &__divSubmit {
+        text-align: center;
+    }
+    &__divErrors {
+        color: red;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+    &__submit {
+        background-color: blue;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+    }
+}

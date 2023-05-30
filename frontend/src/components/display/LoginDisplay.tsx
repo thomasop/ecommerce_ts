@@ -73,14 +73,17 @@ const LoginDisplay = () => {
       )}
 
       <form
+        className="login__form"
         action=""
         onSubmit={(e) => {
           handlerSubmit(e);
         }}
       >
-        <div>
-          <label>Email : </label>
+        <h1 className="login__h1">Se connecter</h1>
+        <div className="login__div login__divEmail">
+          <label className="login__label">Email : </label>
           <input
+            className="login__input"
             type="email"
             name="email"
             id="email"
@@ -89,11 +92,14 @@ const LoginDisplay = () => {
               handlerEmailInput(e);
             }}
           />
-          <div className="divError email">{emailInputError}</div>
+          <div className="login__divError">{emailInputError}</div>
         </div>
-        <div>
-          <label htmlFor="">Password : </label>
+        <div className="login__div login__divPassword">
+          <label className="login__label" htmlFor="">
+            Password :{" "}
+          </label>
           <input
+            className="login__input"
             type="password"
             name="password"
             id="password"
@@ -102,10 +108,12 @@ const LoginDisplay = () => {
               handlerPasswordInput(e);
             }}
           />
-          <div className="divError password">{passwordInputError}</div>
+          <div className="login__divError">{passwordInputError}</div>
         </div>
-        <div>
-          <label htmlFor="">Remember : </label>
+        <div className="login__div login__divRemember">
+          <label className="login__label" htmlFor="">
+            Remember :{" "}
+          </label>
           <input
             type="checkbox"
             name="remember"
@@ -115,10 +123,15 @@ const LoginDisplay = () => {
             }}
           />
         </div>
-        <div>
-          <input type="submit" name="send" value={"Se connecter"} />
+        <div className="login__divErrors">{serverError}</div>
+        <div className="login__divSubmit">
+          <input
+            className="login__submit"
+            type="submit"
+            name="send"
+            value={"Se connecter"}
+          />
         </div>
-        <div className="divErrors">{serverError}</div>
       </form>
     </>
   );
