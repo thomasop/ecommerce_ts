@@ -7,30 +7,46 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
 dotenv.config();
+
 const Login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({
+      result: {
+        status: 400,
+        errorsBody:  errors,
+        error: "",
+      },
+    });
   }
   let email = req.body.email;
   let password = req.body.password;
   const user = await User.findOne({ where: { email: email } });
   if (user === null) {
-    return res.status(400).json({ errors: "Wrong email/password combinaison" });
+    return res.status(404).json({
+      result: {
+        status: 404,
+          error: "Wrong email/password combinaison",
+      },
+    });
   } else {
     const compare = async () => {
       const comp = await bcrypt.compare(password, user?.dataValues.password);
       if (comp === false) {
-        return res
-          .status(400)
-          .json({ errors: "Wrong email/password combinaison" });
+        return res.status(404).json({
+          result: {
+            status: 404,
+              error: "Wrong email/password combinaison",
+          },
+        });
       } else {
         let token = jwt.sign(
           { user: user },
           process.env.SECRET_TOKEN as string
         );
-        let expires = new Date();
-        expires.setFullYear(expires.getFullYear() + 1);
+        //let expires = new Date();
+        /* expires.setFullYear(expires.getFullYear() + 1);
         res.cookie("token", token, {
           expires: expires,
           secure: false,
@@ -42,16 +58,22 @@ const Login = async (req: Request, res: Response) => {
           secure: false,
           httpOnly: false,
           path: "/",
-        });
+        }); */
 
         res.status(200).json({
-          user: {
-            id: user.dataValues.id,
-            email: user.dataValues.email,
-            firstname: user.dataValues.firstname,
-            lastname: user.dataValues.lastname,
+          result: {
+            status: 200,
+            user: {
+              id: user.dataValues.id,
+              email: user.dataValues.email,
+              firstname: user.dataValues.firstname,
+              lastname: user.dataValues.lastname,
+            },
+            token: token,
+            errors: {
+              error: "",
+            },
           },
-          token: token,
         });
       }
     };
@@ -92,7 +114,7 @@ const Signin = (req: Request, res: Response) => {
 
         smtpTransport.sendMail(mailOptions, function (error, info) {
           if (error) {
-            return  res.status(400).json({ message: "Email not send" });
+            return res.status(400).json({ message: "Email not send" });
           } else {
             res.status(200).json({ result: userCreate });
           }
