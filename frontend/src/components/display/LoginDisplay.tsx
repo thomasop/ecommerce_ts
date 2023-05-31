@@ -136,8 +136,8 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
             value={"Se connecter"}
           />
         </div>
-        <div>
-          <button onClick={() => setPage('register')}>Se créer un compte</button>
+        <div className="login__divSubmit login__divSubmit--margin">
+          <button className="login__register" onClick={() => setPage('register')}>Se créer un compte</button>
         </div>
       </form>
     </>

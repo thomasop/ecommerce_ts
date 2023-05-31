@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
-import LoginDisplay from '../components/display/LoginDisplay'
-import RegisterDisplay from '../components/display/RegisterDisplay'
+import React, { useState } from "react";
+import LoginDisplay from "../components/display/LoginDisplay";
+import RegisterDisplay from "../components/display/RegisterDisplay";
 
 const Login = () => {
-  const [page, setPage] = useState<string>("login")
+  const [page, setPage] = useState<string>("login");
   return (
-    <div className='login'>
-      {(page === 'login' && <LoginDisplay setPage={setPage} />) || (page === 'register' && <RegisterDisplay setPage={setPage} />)}
-      
-    </div>
-    
-  )
-}
+    <>
+      {(page === "login" && (
+        <div className="login">
+          <LoginDisplay setPage={setPage} />
+        </div>
+      )) ||
+        (page === "register" && (
+          <div className="register">
+            <RegisterDisplay setPage={setPage} />
+          </div>
+        ))}
+    </>
+  );
+};
 
-export default Login
+export default Login;
