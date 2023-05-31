@@ -2,7 +2,6 @@ import React, {
   Dispatch,
   FormEvent,
   SetStateAction,
-  useRef,
   useState,
 } from "react";
 import LoginFetch from "../fetch/LoginFetch";
@@ -24,7 +23,7 @@ const LoginDisplay: React.FC<Proptype> = ({ setPage }) => {
   const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
-  const { message } = useSelector((state: RootState) => state.flashMessage);
+  const { message } = useSelector((state: RootState) => state.FlashMessage);
 
   const handlerEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const mailregex = /^([\w.-]+)@([\w-]+)((\.(\w){2,})+)$/;

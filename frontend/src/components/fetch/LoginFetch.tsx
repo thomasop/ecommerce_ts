@@ -77,6 +77,11 @@ const LoginFetch: React.FC<Proptype> = ({
           expires.setFullYear(expires.getFullYear() + 1);
           document.cookie =
             "token=" + json.result.token + ";expires=" + expires.toUTCString();
+          document.cookie =
+            "status=" +
+            json.result.status +
+            ";expires=" +
+            expires.toUTCString();
           navigate("/");
         } else {
           document.cookie = `token=${json.result.token}; path=/`;
