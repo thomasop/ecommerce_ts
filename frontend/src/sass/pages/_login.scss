@@ -11,9 +11,14 @@
         transform: translate(-50%, -50%);
         background-color: aqua;
         width: 50%;
-        height: 400px;
+        height: 450px;
         border-radius: 20px;
         padding: 20px;
+    }
+    &__flashMessage {
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
     }
     &__h1 {
         text-align: center;

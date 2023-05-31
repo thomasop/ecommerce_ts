@@ -31,9 +31,14 @@ body {
   transform: translate(-50%, -50%);
   background-color: aqua;
   width: 50%;
-  height: 400px;
+  height: 450px;
   border-radius: 20px;
   padding: 20px;
+}
+.login__flashMessage {
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 .login__h1 {
   text-align: center;

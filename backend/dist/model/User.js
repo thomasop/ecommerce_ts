@@ -21,6 +21,10 @@ const User = connect.define("user", {
     status: {
         type: DataTypes.BOOLEAN,
     },
+    token: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {
     freezeTableName: true,
     createdAt: false,

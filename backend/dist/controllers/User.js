@@ -16,7 +16,6 @@ import nodemailer from "nodemailer";
 dotenv.config();
 const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = validationResult(req);
-    console.log(errors);
     if (!errors.isEmpty()) {
         return res.status(400).json({
             result: {
@@ -82,12 +81,14 @@ const Signin = (req, res) => {
     else {
         const hash = () => __awaiter(void 0, void 0, void 0, function* () {
             const crypt = yield bcrypt.hash(req.body.password, 10);
+            let token = jwt.sign({ user: req.body.email }, process.env.SECRET_TOKEN_REGISTER);
             const userCreate = yield User.create({
                 lastname: req.body.lastname,
                 firstname: req.body.firstname,
                 password: crypt,
                 email: req.body.email,
                 status: false,
+                token: token,
             });
             if (userCreate === null) {
                 return res.status(400).json({
@@ -109,14 +110,14 @@ const Signin = (req, res) => {
                     from: process.env.SECRET_SMTP_EMAIL,
                     to: process.env.SECRET_SMTP_EMAIL,
                     subject: "Validation of your account",
-                    html: "<div><p>Pour activer votre compte veuillez cliquer sur le lien ci dessous</p><a href='http://localhost:3000/login'>Activation</a></div>",
+                    html: `<div><h1>Ecommerce site</h1><p>Click on the link for validate your account</p><p>This link is available one day</p><a href='http://localhost:3000/email-validation/${token}'>Click here</a></div>`,
                 };
                 smtpTransport.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         console.log(error);
                     }
                     else {
-                        console.log('succes');
+                        console.log("succes");
                     }
                 });
                 res.status(200).json({
@@ -130,4 +131,46 @@ const Signin = (req, res) => {
         hash();
     }
 };
-export { Login, Signin };
+const EmailValidation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            result: {
+                status: 400,
+                errorsBody: errors,
+                error: "",
+            },
+        });
+    }
+    let token = req.body.token;
+    const decode = jwt.decode(token);
+    if (decode) {
+        let email = decode.user;
+        let user = yield User.findOne({ where: { email: email } });
+        if (user === null) {
+            return res.status(404).json({ status: 404, message: "User is not found, please try again" });
+        }
+        else {
+            if (user.dataValues.status === false) {
+                let editUser = yield User.update({ status: true, token: null }, { where: { id: user.dataValues.id } });
+                if (editUser[0] === 0) {
+                    return res
+                        .status(404)
+                        .json({ status: 404, message: "User is not edit, please try again" });
+                }
+                else {
+                    res.status(200).json({ status: 200, message: "Your account is ready, you can login in !" });
+                }
+            }
+            else {
+                res
+                    .status(200)
+                    .json({ status: 200, message: "Button is already clicked, you can login in your account !" });
+            }
+        }
+    }
+    else {
+        return res.status(404).json({ status: 404, message: "Token is not found, please try again" });
+    }
+});
+export { Login, Signin, EmailValidation };

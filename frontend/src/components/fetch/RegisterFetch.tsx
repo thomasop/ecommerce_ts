@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface Proptype {
@@ -50,7 +51,7 @@ const RegisterFetch: React.FC<Proptype> = ({
   setServerError,
   setPage
 }) => {
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
   useEffect(() => {
     const register = async () => {
       const response = await fetch("http://localhost:8080/user/signin", {
@@ -84,6 +85,10 @@ const RegisterFetch: React.FC<Proptype> = ({
             })
         }
       } else if (json.result.status === 200) {
+        dispatch({
+          type: "FlashMessage/edit",
+          payload: {message: "You need to comfirm in your email your account for loggin in !"}
+        })
         setSendForm(false)
         setPage('login')
       } else {

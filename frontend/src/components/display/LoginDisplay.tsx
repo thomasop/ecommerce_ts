@@ -6,6 +6,8 @@ import React, {
   useState,
 } from "react";
 import LoginFetch from "../fetch/LoginFetch";
+import { useSelector } from "react-redux";
+import { RootState } from "../../utils/store";
 
 interface Proptype {
   setPage: Dispatch<SetStateAction<string>>;
@@ -22,8 +24,7 @@ const LoginDisplay: React.FC<Proptype> = ({ setPage }) => {
   const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
-  const refDivEmailError = useRef(null);
-  const refDivPasswordError = useRef(null);
+  const { message } = useSelector((state: RootState) => state.flashMessage);
 
   const handlerEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const mailregex = /^([\w.-]+)@([\w-]+)((\.(\w){2,})+)$/;
@@ -98,6 +99,8 @@ const LoginDisplay: React.FC<Proptype> = ({ setPage }) => {
           handlerSubmit(e);
         }}
       >
+        {message.length > 0 && <p className="login__flashMessage">{message}</p>}
+
         <h1 className="login__h1">Se connecter</h1>
         <div className="login__div login__divEmail">
           <label className="login__label">Email : </label>
