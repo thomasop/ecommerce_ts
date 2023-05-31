@@ -50,20 +50,6 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
             else {
                 let token = jwt.sign({ user: user }, process.env.SECRET_TOKEN);
-                //let expires = new Date();
-                /* expires.setFullYear(expires.getFullYear() + 1);
-                res.cookie("token", token, {
-                  expires: expires,
-                  secure: false,
-                  httpOnly: false,
-                  path: "/",
-                });
-                res.cookie("userId", user.dataValues.id, {
-                  expires: expires,
-                  secure: false,
-                  httpOnly: false,
-                  path: "/",
-                }); */
                 res.status(200).json({
                     result: {
                         status: 200,
@@ -74,9 +60,7 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                             lastname: user.dataValues.lastname,
                         },
                         token: token,
-                        errors: {
-                            error: "",
-                        },
+                        error: "",
                     },
                 });
             }
@@ -87,7 +71,13 @@ const Login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const Signin = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array });
+        return res.status(400).json({
+            result: {
+                status: 400,
+                errorsBody: errors,
+                error: "",
+            },
+        });
     }
     else {
         const hash = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -95,12 +85,17 @@ const Signin = (req, res) => {
             const userCreate = yield User.create({
                 lastname: req.body.lastname,
                 firstname: req.body.firstname,
-                password: req.body.password,
+                password: crypt,
                 email: req.body.email,
                 status: false,
             });
             if (userCreate === null) {
-                return res.status(400).json({ errors: "Can't register user" });
+                return res.status(400).json({
+                    result: {
+                        status: 404,
+                        error: "Can't register user, please try again",
+                    },
+                });
             }
             else {
                 let smtpTransport = nodemailer.createTransport({
@@ -114,15 +109,21 @@ const Signin = (req, res) => {
                     from: process.env.SECRET_SMTP_EMAIL,
                     to: process.env.SECRET_SMTP_EMAIL,
                     subject: "Validation of your account",
-                    text: "That was easy!",
+                    html: "<div><p>Pour activer votre compte veuillez cliquer sur le lien ci dessous</p><a href='http://localhost:3000/login'>Activation</a></div>",
                 };
                 smtpTransport.sendMail(mailOptions, function (error, info) {
                     if (error) {
-                        return res.status(400).json({ message: "Email not send" });
+                        console.log(error);
                     }
                     else {
-                        res.status(200).json({ result: userCreate });
+                        console.log('succes');
                     }
+                });
+                res.status(200).json({
+                    result: {
+                        status: 200,
+                        error: "",
+                    },
                 });
             }
         });

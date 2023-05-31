@@ -1,7 +1,11 @@
-import React, { FormEvent, useState } from "react";
+import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import LoginFetch from "../fetch/LoginFetch";
 
-const LoginDisplay = () => {
+interface Proptype {
+  setPage: Dispatch<SetStateAction<string>>
+}
+
+const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(false);
@@ -131,6 +135,9 @@ const LoginDisplay = () => {
             name="send"
             value={"Se connecter"}
           />
+        </div>
+        <div>
+          <button onClick={() => setPage('register')}>Se créer un compte</button>
         </div>
       </form>
     </>

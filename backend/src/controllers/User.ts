@@ -15,7 +15,7 @@ const Login = async (req: Request, res: Response) => {
     return res.status(400).json({
       result: {
         status: 400,
-        errorsBody:  errors,
+        errorsBody: errors,
         error: "",
       },
     });
@@ -27,7 +27,7 @@ const Login = async (req: Request, res: Response) => {
     return res.status(404).json({
       result: {
         status: 404,
-          error: "Wrong email/password combinaison",
+        error: "Wrong email/password combinaison",
       },
     });
   } else {
@@ -37,7 +37,7 @@ const Login = async (req: Request, res: Response) => {
         return res.status(404).json({
           result: {
             status: 404,
-              error: "Wrong email/password combinaison",
+            error: "Wrong email/password combinaison",
           },
         });
       } else {
@@ -45,20 +45,6 @@ const Login = async (req: Request, res: Response) => {
           { user: user },
           process.env.SECRET_TOKEN as string
         );
-        //let expires = new Date();
-        /* expires.setFullYear(expires.getFullYear() + 1);
-        res.cookie("token", token, {
-          expires: expires,
-          secure: false,
-          httpOnly: false,
-          path: "/",
-        });
-        res.cookie("userId", user.dataValues.id, {
-          expires: expires,
-          secure: false,
-          httpOnly: false,
-          path: "/",
-        }); */
 
         res.status(200).json({
           result: {
@@ -70,9 +56,7 @@ const Login = async (req: Request, res: Response) => {
               lastname: user.dataValues.lastname,
             },
             token: token,
-            errors: {
-              error: "",
-            },
+            error: "",
           },
         });
       }
@@ -84,19 +68,31 @@ const Login = async (req: Request, res: Response) => {
 const Signin = (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array });
+    return res.status(400).json({ 
+      result: {
+        status: 400,
+        errorsBody: errors,
+        error: "",
+      },
+     });
   } else {
     const hash = async () => {
       const crypt = await bcrypt.hash(req.body.password, 10);
       const userCreate = await User.create({
         lastname: req.body.lastname,
         firstname: req.body.firstname,
-        password: req.body.password,
+        password: crypt,
         email: req.body.email,
         status: false,
       });
       if (userCreate === null) {
-        return res.status(400).json({ errors: "Can't register user" });
+        return res.status(400).json({ 
+          result: {
+            status: 404,
+            error: "Can't register user, please try again",
+          },
+          
+           });
       } else {
         let smtpTransport = nodemailer.createTransport({
           service: "Gmail",
@@ -111,13 +107,18 @@ const Signin = (req: Request, res: Response) => {
           subject: "Validation of your account",
           text: "That was easy!",
         };
-
         smtpTransport.sendMail(mailOptions, function (error, info) {
           if (error) {
-            return res.status(400).json({ message: "Email not send" });
+            console.log(error);
           } else {
-            res.status(200).json({ result: userCreate });
+            console.log('succes');
           }
+        });
+        res.status(200).json({
+          result: {
+            status: 200,
+            error: "",
+          },
         });
       }
     };
