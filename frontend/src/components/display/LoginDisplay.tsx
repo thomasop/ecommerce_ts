@@ -1,11 +1,17 @@
-import React, { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
 import LoginFetch from "../fetch/LoginFetch";
 
 interface Proptype {
-  setPage: Dispatch<SetStateAction<string>>
+  setPage: Dispatch<SetStateAction<string>>;
 }
 
-const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
+const LoginDisplay: React.FC<Proptype> = ({ setPage }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(false);
@@ -16,6 +22,8 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
   const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
   const [validPasswordInput, setValidPasswordInput] = useState<boolean>(false);
   const [sendForm, setSendForm] = useState<boolean>(false);
+  const refDivEmailError = useRef(null);
+  const refDivPasswordError = useRef(null);
 
   const handlerEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const mailregex = /^([\w.-]+)@([\w-]+)((\.(\w){2,})+)$/;
@@ -60,6 +68,13 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
     e.preventDefault();
     if (validEmailInput === true && validPasswordInput === true) {
       setSendForm(true);
+    } else {
+      if (validEmailInput === false) {
+        setEmailInputError("Email : need to be not empty");
+      }
+      if (validPasswordInput === false) {
+        setPasswordInputError("Password : need to be not empty");
+      }
     }
   };
   return (
@@ -95,6 +110,7 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
             onChange={(e) => {
               handlerEmailInput(e);
             }}
+            required
           />
           <div className="login__divError">{emailInputError}</div>
         </div>
@@ -111,6 +127,7 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
             onChange={(e) => {
               handlerPasswordInput(e);
             }}
+            required
           />
           <div className="login__divError">{passwordInputError}</div>
         </div>
@@ -137,7 +154,12 @@ const LoginDisplay: React.FC<Proptype> = ({setPage}) => {
           />
         </div>
         <div className="login__divSubmit login__divSubmit--margin">
-          <button className="login__register" onClick={() => setPage('register')}>Se créer un compte</button>
+          <button
+            className="login__register"
+            onClick={() => setPage("register")}
+          >
+            Se créer un compte
+          </button>
         </div>
       </form>
     </>

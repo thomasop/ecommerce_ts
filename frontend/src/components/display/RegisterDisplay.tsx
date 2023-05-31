@@ -125,6 +125,22 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
       validInputPasswordComfirm === true
     ) {
       setSendForm(true);
+    } else {
+      if (validInputEmail === false) {
+        setEmailInputError('Email : need to be not empty')
+      }
+      if (validInputFirstname === false) {
+        setFirstnameInputError('Firstname : need to be not empty')
+      }
+      if (validInputLastname === false) {
+        setLastnameInputError('Lastname : need to be not empty')
+      }
+      if (validInputPassword === false) {
+        setPasswordInputError('Password : need to be not empty')
+      }
+      if (validInputPasswordComfirm === false) {
+        setPasswordComfirmError('Password comfirm : need to be not empty')
+      }
     }
   };
   return (
@@ -164,6 +180,7 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
               handlerFirstnameInput(e);
             }}
             value={firstname}
+            required
           />
           <div className="register__divError">{firstnameInputError}</div>
         </div>
@@ -178,6 +195,7 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
             onChange={(e) => {
               handlerLastnameInput(e);
             }}
+            required
           />
           <div className="register__divError">{lastnameInputError}</div>
         </div>
@@ -192,6 +210,7 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
             onChange={(e) => {
               handlerPasswordInput(e);
             }}
+            required
           />
           <div className="register__divError">{passwordInputError}</div>
         </div>
@@ -206,6 +225,7 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
             onChange={(e) => {
               handlerPasswordComfirmInput(e);
             }}
+            required
           />
           <div className="register__divError">{passwordComfirmInputError}</div>
         </div>
@@ -220,6 +240,7 @@ const RegisterDisplay: React.FC<Proptype> = ({ setPage }) => {
             onChange={(e) => {
               handlerEmailInput(e);
             }}
+            required
           />
           <div className="register__divError">{emailInputError}</div>
         </div>
